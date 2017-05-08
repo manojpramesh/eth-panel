@@ -3,11 +3,16 @@
 var express = require('express');
 var router = express.Router();
 
-router.get('/', function (req, res) {
+router.get('/home', function (req, res) {
   res.locals = {
-      title: "Bletchley"
+      title: "Eth Panel"
   };
   res.render('index');
 });
+
+router.get('/doc', function(req, res) {
+  res.render('../doc/index');
+});
+
 
 module.exports = router;
