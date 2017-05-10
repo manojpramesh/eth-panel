@@ -99,18 +99,22 @@
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 panel panel-default card ">
           <div class="panel-heading"><i class="fa fa-list-alt"></i> Recent transactions</div>
           <div class="panel-body scroll-auto" id="style-1">
-            <% for(var i=0 ; i < blocks.length; i++) { %>
+            <% for(var i=0 ; i < txs.length; i++) { %>
               <blockquote>
                 <strong>Block #:</strong>
-                <%= blocks[i].number %>
+                <%= txs[i].number %>
                   <footer>
                     <div>
-                      <strong>Mined by:</strong>
-                      <%= blocks[i].miner %>
+                      <strong>From :</strong>
+                      <%= txs[i].from %>
                     </div>
                     <div>
-                      <strong>Transactions: </strong>
-                      <%= blocks[i].transactions.length %>
+                      <strong>To: </strong>
+                      <%= txs[i].to %>
+                    </div>
+                    <div>
+                      <strong>Value: </strong>
+                      <%= txs[i].value %>
                     </div>
                   </footer>
               </blockquote>

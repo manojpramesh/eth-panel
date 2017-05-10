@@ -10,7 +10,8 @@ web3.setProvider(new web3.providers.HttpProvider(global.web3Provider));
 router.get('/home', function (req, res) {
   res.locals = {
     title: "Eth Panel",
-    blocks: getlatestBlocks(10)
+    blocks: getlatestBlocks(10),
+    txs: getLatestTransactions(10)
   };
   res.render('index');
 });
@@ -23,10 +24,17 @@ router.get('/doc', function (req, res) {
 var getlatestBlocks = function (n) {
   var result = [];
   var lastBlock = web3.eth.blockNumber;
-  for (var i = lastBlock; i > lastBlock - n; i--) {
+  for (var i = lastBlock; i > lastBlock - n; i--)
     result.push(web3.eth.getBlock(i));
-  }
   return result;
-}
+};
+
+var getLatestTransactions = function (n) {
+  var result = [];
+  var lastBlock = web3.eth.blockNumber;
+  for (var i = lastBlock; i > lastBlock - n; i--)
+    result.push(web3.eth.getTransactionFromBlock(i));
+  return result;
+};
 
 module.exports = router;
