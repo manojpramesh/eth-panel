@@ -66,6 +66,34 @@ router.post('/deploy', function (req, res) {
 });
 
 
+// Read from contract
+router.get('/:contract/:function/:id', function (req, res) {
+    var contractAddress = global.contracts[req.params.contract].address;
+    var abi = global.contracts[req.params.contract].abi;
+    var contract = web3.eth.contract(abi).at(contractAddress);
+
+    var response = contract[req.params.function](req.query.id);
+    res.json(response);
+});
+
+// write to contract
+router.post('/:contract/:function', function (req, res) {
+    var contractAddress = global.contracts[req.params.contract].address;
+    var abi = global.contracts[req.params.contract].abi;
+
+    var data = {
+        params: req.query.params.split(','),
+        name: req.params.function,
+        amount: 0,
+        fromAccount: fromAccount,
+        contractAddress: contractAddress,
+        abi: abi,
+        privateKey: privateKey
+    };
+    var hash = writeToContract(data);
+    res.json(hash);
+});
+
 
 
 
