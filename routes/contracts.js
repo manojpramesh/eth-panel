@@ -95,6 +95,35 @@ router.post('/:contract/:function', function (req, res) {
 });
 
 
+// Redeploy a contract
+router.get('/reDeploy/:contract', function (req, res) {
+    var input = fs.readFileSync('Contract/' + req.params.contract + '.sol', 'utf8');
+
+    var compiledContract = compileContract(input, ":" + req.params.contract);
+
+    var rawTx = {
+        nonce: web3.toHex(web3.eth.getTransactionCount(fromAccount)),
+        gasPrice: web3.toHex(web3.eth.gasPrice),
+        gasLimit: web3.toHex(3500000),
+        from: fromAccount,
+        data: compiledContract.contractData
+    };
+    var tx = new Tx(rawTx);
+    tx.sign(privateKey);
+    var serializedTx = tx.serialize();
+
+    var hash = web3.eth.sendRawTransaction("0x" + serializedTx.toString('hex'));
+
+    var receipt = null;
+    while (receipt == null) {
+        receipt = web3.eth.getTransactionReceipt(hash);
+    }
+    res.json({
+        th: hash,
+        ad: receipt.contractAddress,
+        abi: compiledContract.abi
+    });
+});
 
 
 
